@@ -82,6 +82,32 @@ def api():
         return jsonify(read_api_data())
     except ValueError as error:
         return jsonify(error=str(error)), 500
+@app.route("/submittodoitem", methods=["POST"])
+def submit_todo_item():
+    item_name = request.form.get("itemName", "").strip()
+    item_description = request.form.get("itemDescription", "").strip()
+
+    if not item_name or not item_description:
+        return jsonify(
+            error="itemName and itemDescription are required."
+        ), 400
+
+    document = {
+        "itemName": item_name,
+        "itemDescription": item_description,
+    }
+
+    try:
+        result = get_collection().insert_one(document)
+    except ConnectionError as error:
+        return jsonify(error=str(error)), 503
+    except PyMongoError:
+        return jsonify(error="Unable to save the to-do item."), 500
+
+    return jsonify(
+        message="To-do item saved successfully.",
+        itemId=str(result.inserted_id),
+    ), 201
 
 
 if __name__ == "__main__":
