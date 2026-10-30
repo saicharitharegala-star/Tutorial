@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Create your account</title>
+	<style>
+		:root {
+			color-scheme: light;
+			font-family: "Avenir Next", Avenir, sans-serif;
+			color: #18322f;
+			background: #eef4ef;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			min-height: 100vh;
+			margin: 0;
+			display: grid;
+			place-items: center;
+			padding: 24px;
+			background: radial-gradient(circle at 15% 10%, #d9eee2, transparent 32%), #eef4ef;
+		}
+
+		main {
+			width: min(100%, 440px);
+			padding: 36px;
+			border: 1px solid #d4e0d8;
+			border-radius: 8px;
+			background: #000000;
+			color: #fffefa;
+			box-shadow: 0 18px 48px rgb(24 50 47 / 9%);
+		}
+
+		h1 {
+			margin: 0 0 8px;
+			font-family: Georgia, serif;
+			font-size: 32px;
+			font-weight: 500;
+		}
+
+		.intro {
+			margin: 0 0 28px;
+			color: #bfccc6;
+			line-height: 1.5;
+		}
+
+		.error {
+			margin: 0 0 20px;
+			padding: 12px;
+			border: 1px solid #ffb4ab;
+			border-radius: 5px;
+			background: #5c1f1a;
+			color: #ffe9e5;
+		}
+
+		label {
+			display: block;
+			margin: 0 0 7px;
+			font-size: 14px;
+			font-weight: 600;
+		}
+
+		input {
+			width: 100%;
+			min-height: 46px;
+			margin: 0 0 18px;
+			padding: 10px 12px;
+			border: 1px solid #bfcec5;
+			border-radius: 5px;
+			background: white;
+			color: #18322f;
+			font: inherit;
+		}
+
+		input:focus {
+			outline: 3px solid #badaca;
+			border-color: #28735e;
+		}
+
+		button {
+			width: 100%;
+			min-height: 48px;
+			margin-top: 4px;
+			border: 0;
+			border-radius: 5px;
+			background: #206a56;
+			color: white;
+			font: inherit;
+			font-weight: 700;
+			cursor: pointer;
+		}
+
+		button:hover {
+			background: #174f40;
+		}
+
+		.login {
+			margin: 20px 0 0;
+			color: #bfccc6;
+			text-align: center;
+			font-size: 14px;
+		}
+
+		.login a {
+			color: #a1dfc5;
+			font-weight: 700;
+		}
+
+		.data-link {
+			display: block;
+			margin-top: 16px;
+			color: #a1dfc5;
+			font-weight: 700;
+			text-align: center;
+		}
+
+		@media (max-width: 480px) {
+			main {
+				padding: 28px 22px;
+			}
+		}
+	</style>
+</head>
+<body>
+	<main>
+		<h1>Create your account</h1>
+		<p class="intro">Sign up to get started.</p>
+		<p>Today is {{ date }}.</p>
+		<p>Current time is {{ time }}.</p>
+		{% if error %}
+		<p class="error" role="alert">{{ error }}</p>
+		{% endif %}
+		<form action="{{ url_for('submit') }}" method="post">
+			<label for="name">Full name</label>
+			<input id="name" name="name" type="text" autocomplete="name" value="{{ form_data.name if form_data else '' }}" required>
+
+			<label for="email">Email address</label>
+			<input id="email" name="email" type="email" autocomplete="email" value="{{ form_data.email if form_data else '' }}" required>
+            
+			<label for="password">Password</label>
+			<input id="password" name="password" type="password" autocomplete="new-password" minlength="8" required>
+
+			<button type="submit">Create account</button>
+		</form>
+		<a class="data-link" href="{{ url_for('api') }}">View API data</a>
+		<p class="login">Already have an account? <a href="#">Log in</a></p>
+	</main>
+</body>
+</html>
