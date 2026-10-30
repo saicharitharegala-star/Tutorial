@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>To-Do Page</title>
+</head>
+<body>
+    <h1>Add a To-Do Item</h1>
+
+    {% if error %}
+    <p role="alert">{{ error }}</p>
+    {% endif %}
+
+    <form action="{{ url_for('submit_todo') }}" method="post">
+        <p>
+            <label for="itemName">Item Name</label><br>
+            <input id="itemName" name="itemName" type="text"
+                   value="{{ form_data.get('itemName', '') }}" required>
+        </p>
+
+        <p>
+            <label for="itemDescription">Item Description</label><br>
+            <textarea id="itemDescription" name="itemDescription"
+                      required>{{ form_data.get('itemDescription', '') }}</textarea>
+        </p>
+
+        <button type="submit">Add Item</button>
+    </form>
+
+    <p><a href="{{ url_for('home') }}">Home</a></p>
+</body>
+</html>

@@ -80,6 +80,40 @@ def get_data():
         return jsonify(response.json())
     except (requests.RequestException, ValueError):
         return jsonify(error="Unable to retrieve data from the backend."), 502
+@app.route("/todo")
+def todo():
+    return render_template("todo.html", form_data={})
+
+
+@app.route("/submittodoitem", methods=["POST"])
+def submit_todo():
+    form_data = {
+        "itemName": request.form.get("itemName", "").strip(),
+        "itemDescription": request.form.get("itemDescription", "").strip(),
+    }
+
+    if not all(form_data.values()):
+        return render_template(
+            "todo.html",
+            error="Please enter both fields.",
+            form_data=form_data,
+        ), 400
+
+    try:
+        response = requests.post(
+            f"{BACKEND_URL}/submittodoitem",
+            data=form_data,
+            timeout=10,
+        )
+        response.raise_for_status()
+    except requests.RequestException:
+        return render_template(
+            "todo.html",
+            error="Unable to save the item. Check that the backend is running.",
+            form_data=form_data,
+        ), 502
+
+    return redirect(url_for("success"))
 
 
 if __name__ == "__main__":
